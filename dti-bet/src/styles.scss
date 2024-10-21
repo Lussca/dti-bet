@@ -1,0 +1,108 @@
+@import '@angular/material/prebuilt-themes/indigo-pink.css';
+
+// Define cores primárias
+$primary-color: #E8B920;
+$accent-color: #221D23;
+$background-color: #f5f5f5;
+$text-color: #333;
+
+// Tipografia
+$font-family: 'Roboto', sans-serif;
+$base-font-size: 16px;
+
+// Variáveis de espaçamento
+$spacing-unit: 8px;
+$small-spacing: $spacing-unit * 0.5;
+$medium-spacing: $spacing-unit;
+$large-spacing: $spacing-unit * 2;
+
+// Reset básico de CSS
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+// Corpo da página
+body {
+  font-family: $font-family;
+  font-size: $base-font-size;
+  background-color: $background-color;
+  color: $text-color;
+  line-height: 1.6;
+  padding: 0;
+  margin: 0;
+}
+
+// Estilos para links
+a {
+  color: $primary-color;
+  text-decoration: none;
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+// Layout padrão
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: $medium-spacing;
+}
+
+// Utilitários de espaçamento
+.mg-sm { margin: $small-spacing; }
+.mg-md { margin: $medium-spacing; }
+.mg-lg { margin: $large-spacing; }
+
+.pd-sm { padding: $small-spacing; }
+.pd-md { padding: $medium-spacing; }
+.pd-lg { padding: $large-spacing; }
+
+// Tipografia básica
+h1, h2, h3, h4, h5, h6 {
+  color: $primary-color;
+  font-weight: 400;
+  margin-bottom: $medium-spacing;
+}
+
+p {
+  margin-bottom: $medium-spacing;
+}
+
+button {
+  background-color: $primary-color;
+  color: #fff;
+  padding: $small-spacing $medium-spacing;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: $base-font-size;
+  &:hover {
+    background-color: darken($primary-color, 10%);
+  }
+}
+
+// Exemplo de uso de flexbox
+.flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+// Estilo de botões básicos
+.btn {
+  display: inline-block;
+  padding: $small-spacing $medium-spacing;
+  font-size: $base-font-size;
+  text-align: center;
+  border-radius: 4px;
+  background-color: $primary-color;
+  color: white;
+  border: none;
+  cursor: pointer;
+
+  &:hover {
+    background-color: darken($primary-color, 10%);
+  }
+}
