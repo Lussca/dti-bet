@@ -7,10 +7,10 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { MatCardModule } from '@angular/material/card';
 
-interface Quote {
-  text: string;
-  author: string;
-}
+// interface Quote {
+//   text: string;
+//   author: string;
+// }
 
 @Component({
   selector: 'app-login',
