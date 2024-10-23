@@ -1,34 +1,39 @@
-<!-- <div *ngIf="motivationalMessage">
-    <p>{{ motivationalMessage.text }}</p>
-    <small>- {{ motivationalMessage.author }}</small>
-</div> -->
+
 <div class="login-container">
-    <mat-card class="login-card">
-      <mat-card-title>
-        <h2><strong>DTI BET</strong></h2>
-      </mat-card-title>
+  <div class="joke-container">
+    <mat-card class="joke-card">
       <mat-card-content>
-        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-          <mat-form-field appearance="fill">
-            <mat-label>Email</mat-label>
-            <input matInput formControlName="email" required autocomplete="off" />
-            <mat-error *ngIf="loginForm.get('email')?.hasError('required')">O email é obrigatório.</mat-error>
-            <mat-error *ngIf="loginForm.get('email')?.hasError('email')">Insira um email válido.</mat-error>
-          </mat-form-field>
-          <mat-form-field appearance="fill">
-            <mat-label>Senha</mat-label>
-            <input matInput type="password" formControlName="password" required autocomplete="off" />
-            <mat-error *ngIf="loginForm.get('password')?.hasError('required')">A senha é obrigatória.</mat-error>
-            <mat-error *ngIf="loginForm.get('password')?.hasError('minlength')">A senha deve ter pelo menos 6 caracteres.</mat-error>
-          </mat-form-field>
-          <button mat-raised-button type="submit">Entrar</button>
-        </form>
-        <div class="link-container">
-            <a routerLink="/register" class="link">Registrar</a>
-            <span class="separator">|</span>
-            <a routerLink="/recover-password" class="link">Recuperar Senha</a>
-        </div>
+        <p>{{ joke }}</p>
+        <p><strong>{{ punchline }}</strong></p>
       </mat-card-content>
     </mat-card>
   </div>
+  <mat-card class="login-card">
+    <mat-card-title>
+      <h2><strong>DTI BET</strong></h2>
+    </mat-card-title>
+    <mat-card-content>
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+        <mat-form-field appearance="fill">
+          <mat-label>Email</mat-label>
+          <input matInput formControlName="email" required autocomplete="off" />
+          <mat-error *ngIf="loginForm.get('email')?.hasError('required')">O email é obrigatório.</mat-error>
+          <mat-error *ngIf="loginForm.get('email')?.hasError('email')">Insira um email válido.</mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="fill">
+          <mat-label>Senha</mat-label>
+          <input matInput type="password" formControlName="password" required autocomplete="off" />
+          <mat-error *ngIf="loginForm.get('password')?.hasError('required')">A senha é obrigatória.</mat-error>
+          <mat-error *ngIf="loginForm.get('password')?.hasError('minlength')">A senha deve ter pelo menos 6 caracteres.</mat-error>
+        </mat-form-field>
+        <button mat-raised-button type="submit">Entrar</button>
+      </form>
+      <div class="link-container">
+          <a routerLink="/register" class="link">Registrar</a>
+          <span class="separator">|</span>
+          <a routerLink="/recover-password" class="link">Recuperar Senha</a>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>
   

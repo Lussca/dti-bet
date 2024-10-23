@@ -3,27 +3,31 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
-import { MatButtonModule } from '@angular/material/button';
-import { MatInputModule } from '@angular/material/input';
-import { MatCardModule } from '@angular/material/card';
+import { map } from 'rxjs';
+import { materialModules } from '../../shared/material-imports';
 
-// interface Quote {
-//   text: string;
-//   author: string;
-// }
+interface Quote {
+  setup: string,
+  punchline: string,
+}
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [ CommonModule, ReactiveFormsModule, MatButtonModule, MatInputModule, MatCardModule, HttpClientModule ],
+  imports: [ ...materialModules, CommonModule, ReactiveFormsModule, HttpClientModule ],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent implements OnInit {
   loginForm: FormGroup;
-  // motivationalMessage: Quote | null = null;
 
-  constructor(private fb: FormBuilder, private http: HttpClient) {
+  joke: string = '';  
+  punchline: string = '';
+
+  constructor(
+    private fb: FormBuilder, 
+    private http: HttpClient
+  ) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
@@ -31,21 +35,31 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit() {
-    // this.fetchMotivationalQuote();
+    this.fetchMotivationalQuote();
   }
 
-  // fetchMotivationalQuote() {
-  //   this.http.get<Quote[]>('https://official-joke-api.appspot.com/random_joke')
-  //     .subscribe(
-  //       (response) => {
-  //         console.log(response);
-  //         // this.motivationalMessage = response[0];
-  //       },
-  //       (error) => {
-  //         console.error('Erro ao buscar a citação:', error);
-  //       }
-  //     );
-  // }
+  fetchMotivationalQuote() {
+    this.http.get<Quote>('https://official-joke-api.appspot.com/random_joke').subscribe(
+      (response) => {
+        if (response) {
+          this.translateToPortuguese(response.setup).subscribe((translatedSetup: string) => {
+            this.joke = translatedSetup;
+          });
+
+          this.translateToPortuguese(response.punchline).subscribe((translatedPunchline: string) => {
+            this.punchline = translatedPunchline;
+          });
+        }
+      }
+    );
+  }
+
+  translateToPortuguese(text: string) {
+    const apiUrl = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(text)}&langpair=en|pt`;
+    return this.http.get<any>(apiUrl).pipe(
+      map((response) => response.responseData.translatedText)
+    );
+  }
 
   onSubmit() {
     if (this.loginForm.valid) {

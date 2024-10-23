@@ -1,20 +1,37 @@
 @import '../../../styles';
 
-.motivational-message {
-  text-align: center;
-  margin-bottom: 20px;
-  font-size: 1.2rem;
-  color: $primary-color;
-}
-
 .login-container {
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   height: 100vh;
   background-image: url('../../../../public/background_login.jpg');
   background-size: cover;
   background-position: center;
+
+  .joke-container {
+    margin-bottom: 20px;
+  }
+  
+  .joke-card {
+    width: 100%;
+    max-width: 400px;
+    padding: 20px;
+    background-color: #e3f2fd; /* Azul claro */
+    border-radius: 8px;
+    text-align: center;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .joke-card p {
+    margin: 0;
+    font-size: 16px;
+  }
+  
+  .joke-card strong {
+    font-size: 18px;
+  }
 
   .login-card {
     width: 400px;
