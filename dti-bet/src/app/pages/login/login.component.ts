@@ -1,71 +1,77 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
-import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule } from '@angular/forms';
-import { map } from 'rxjs';
-import { materialModules } from '../../shared/material-imports';
-
-interface Quote {
-  setup: string,
-  punchline: string,
-}
-
+import { ApiService } from '../../shared/service/api.service';
+import { NotificationService } from '../../shared/service/notification.service';
+import { MatDialog } from '@angular/material/dialog';
+import { RecoverComponent } from './recover/recover.component';
 @Component({
   selector: 'app-login',
-  standalone: true,
-  imports: [ ...materialModules, CommonModule, ReactiveFormsModule, HttpClientModule ],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent implements OnInit {
-  loginForm: FormGroup;
 
-  joke: string = '';  
-  punchline: string = '';
+  loginForm: FormGroup;
+  registerForm: FormGroup;
 
   constructor(
-    private fb: FormBuilder, 
-    private http: HttpClient
+    private form: FormBuilder,
+    private dialog: MatDialog,
+    private apiService: ApiService,
+    private notificationService: NotificationService
   ) {
-    this.loginForm = this.fb.group({
+    this.loginForm = this.form.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
+    });
+
+    this.registerForm = this.form.group({
+      nome: ['', [Validators.required]],
+      email: ['', [Validators.required, Validators.email]],
+      senha: ['', [Validators.required, Validators.minLength(6)]],
     });
   }
 
   ngOnInit() {
-    this.fetchMotivationalQuote();
-  }
+    const signUpButton = document.getElementById('signUp');
+    const signInButton = document.getElementById('signIn');
+    const main = document.getElementById('main');
+    if (signUpButton && signInButton && main) {
+      signUpButton.addEventListener('click', () => {
+        main.classList.add("right-panel-active");
+      });
 
-  fetchMotivationalQuote() {
-    this.http.get<Quote>('https://official-joke-api.appspot.com/random_joke').subscribe(
-      (response) => {
-        if (response) {
-          this.translateToPortuguese(response.setup).subscribe((translatedSetup: string) => {
-            this.joke = translatedSetup;
-          });
-
-          this.translateToPortuguese(response.punchline).subscribe((translatedPunchline: string) => {
-            this.punchline = translatedPunchline;
-          });
-        }
-      }
-    );
-  }
-
-  translateToPortuguese(text: string) {
-    const apiUrl = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(text)}&langpair=en|pt`;
-    return this.http.get<any>(apiUrl).pipe(
-      map((response) => response.responseData.translatedText)
-    );
-  }
-
-  onSubmit() {
-    if (this.loginForm.valid) {
-      console.log('Formulário válido', this.loginForm.value);
-    } else {
-      console.log('Formulário inválido');
+      signInButton.addEventListener('click', () => {
+        main.classList.remove("right-panel-active");
+      });
     }
+  }
+
+  onSubmit(formType: 'login' | 'register') {
+    if (formType === 'login' && this.loginForm.valid) {
+      this.apiService.login(this.loginForm.value).subscribe(
+        (response: any) => {
+          this.notificationService.notify('Login realizado com sucesso!', 'success');
+        }, 
+        (error) => {
+          this.notificationService.notify('Erro ao realizar login: ' + error.message, 'error');
+        }
+      )
+    } else if (formType === 'register' && this.registerForm.valid) {
+      this.apiService.register(this.registerForm.value).subscribe(
+        (response: any) => {
+          this.notificationService.notify('Registro realizado com sucesso!', 'success'); 
+        },
+        (error) => {
+          this.notificationService.notify('Erro ao realizar registro: ' + error.message, 'error');
+        }
+      )
+    } else {
+      this.notificationService.notify('Formulário inválido', 'error');
+    }
+  }
+
+  recover(): void{
+    this.dialog.open(RecoverComponent);
   }
 }

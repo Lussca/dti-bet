@@ -1,0 +1,7 @@
+// @import '../../../../styles.scss';
+
+::ng-deep {
+    mat-dialog-content {
+        padding-bottom: 0 !important;
+    }
+}
